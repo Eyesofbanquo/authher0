@@ -3,6 +3,17 @@
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
+  "bin": {
+    "authher0": "./src/app.js"
+  },
+  "homepage": "https://github.com/Eyesofbanquo/authher0",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Eyesofbanquo/authher0.git"
+  },
+  "engines": {
+    "node": ">=8"
+  },
   "scripts": {
     "test": "exit 0",
     "start": "node ./src/app.js"

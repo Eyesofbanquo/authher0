@@ -1,3 +1,5 @@
+#!/usr/bin/env node
+
 const clear = require('clear');
 const chalk = require('chalk');
 const figlet = require('figlet');
@@ -17,10 +19,7 @@ const argv = require('yargs')
   .example('$0 configure')
   .alias('t', 'token')
   .nargs('t', 1)
-  .describe('t', 'Refresh Token')
-  .demandOption(['t']).argv;
-
-console.log(argv._);
+  .describe('t', 'Refresh Token').argv;
 
 if (argv._[0] === 'configure') {
   clear();
@@ -38,23 +37,27 @@ if (argv.token) {
   const id = conf.get('client_id');
   const secret = conf.get('client_secret');
 
-  axios({
-    url: domain,
-    method: 'POST',
-    data: {
-      token: argv.token,
-      client_id: id,
-      client_secret: secret
-    }
-  })
-    .then((response) => {
-      if (response.status === 200) {
-        console.log(chalk.green('Everything looks good!'));
-      } else {
-        console.log(chalk.red('Something went wrong :('));
+  if (domain === undefined || id === undefined || secret === undefined) {
+    console.log(chalk.red('Please run "authher0 configure"'));
+  } else {
+    axios({
+      url: domain,
+      method: 'POST',
+      data: {
+        token: argv.token,
+        client_id: id,
+        client_secret: secret
       }
     })
-    .catch(() => {
-      console.log(chalk.red('Something went wrong :('));
-    });
+      .then((response) => {
+        if (response.status === 200) {
+          console.log(chalk.green('Everything looks good!'));
+        } else {
+          console.log(chalk.red('Something went wrong :('));
+        }
+      })
+      .catch(() => {
+        console.log(chalk.red('Something went wrong :('));
+      });
+  }
 }
